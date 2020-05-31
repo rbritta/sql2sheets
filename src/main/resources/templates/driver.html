@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: baseHead(~{::title})">
+    <title>Data Source</title>
+</head>
+
+<body>
+<div class="container">
+    <div th:insert="fragments/header :: content"></div>
+
+    <div class="row">
+        <div class="col-md-12 mt-5">
+            <h3>Drivers</h3>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body pt-1 pb-1">
+            <div class="row " style="background-color: #f6f6f6;">
+                <div class="col-md-12 p-0">
+                    <table class="table">
+                        <thead>
+                        <tr style="background-color: #dbdbdb;">
+                            <th class="align-middle text-center">Name</th>
+                            <th class="align-middle text-center"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${drivers.empty}">
+                            <td colspan="2">No Drivers found</td>
+                        </tr>
+                        <tr th:each="driver : ${drivers}">
+                            <td class="align-middle text-center"><span th:text="${driver.filename}">Filename</span></td>
+                            <td class="align-middle text-center">
+                                <a class="btn btn-danger mt-1 mr-1 mb-1"
+                                   th:href="@{/drivers/{id}/delete(id=${driver.filename})}">
+                                    <img src="/image/cross.svg" alt="Delete" width="20" height="20" title="Delete"/>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mt-5">
+            <h3>Set Driver</h3>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-12 mb-3" th:if="${message}">
+                <span style="color: #FF0000;" th:text="${message}">Any form message</span>
+            </div>
+            <div class="col-md-12">
+                <form th:action="@{/drivers/create}" enctype="multipart/form-data" method="post">
+                    <label for="file">File for upload</label>
+                    <input class="form-control-file" id="file" type="file" name="file"/> <br/>
+                    <div class="row">
+                        <a class="btn btn-info mr-2" href="#" th:href="@{/}">Back</a>
+                        <input class="btn btn-success" type="submit" value="Upload" name="upload"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

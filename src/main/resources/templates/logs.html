@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: baseHead(~{::title})">
+    <title>Task Logs</title>
+</head>
+
+<body>
+<div class="container">
+    <div th:insert="fragments/header :: content"></div>
+
+    <div class="row">
+        <div class="col-md-12 mt-5 text-center">
+            <a class="btn btn-info float-left mr-2" href="#" th:href="@{/}">Back</a>
+            <a class="btn btn-danger float-left" href="#" th:href="@{/tasks/{id}/logs/clear(id=${task.id})}">Clear</a>
+            <h3 th:text="${task.name} + '  ::  Logs'">Logs of task</h3>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div style="font-size: 0.7rem;" class="col-md-12" id="log-data">
+            <div th:each="line : ${logs.lines}">
+                <span th:text="${line}">Log line</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+        var taskId = /*[[${task.id}]]*/ 0;
+        function refreshLog() {
+            $.get("/tasks/" + taskId + "/logs/data-fragment", function(fragment) {
+                $("#log-data").replaceWith(fragment);
+            });
+            setTimeout(refreshLog, 3000);
+        }
+        refreshLog();
+    /*]]>*/
+</script>
+</body>
+</html>

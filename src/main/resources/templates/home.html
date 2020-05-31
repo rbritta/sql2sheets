@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/head :: baseHead(~{::title})">
+        <title th:text="${appName}">App Name</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div th:insert="fragments/header :: content"></div>
+
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h3>Data Sources<a class="btn btn-link" href="#" th:href="@{/datasources}">:: New</a></h3>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body pt-1 pb-1">
+                    <div class="row " style="background-color: #f6f6f6;">
+                        <div class="col-md-12 p-0">
+                            <table class="table">
+                                <thead>
+                                <tr style="background-color: #dbdbdb;">
+                                    <th class="align-middle text-center">Name</th>
+                                    <th class="align-middle text-center">Url</th>
+                                    <th class="align-middle text-center">Username</th>
+                                    <th class="align-middle text-center"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${dataSources.empty}">
+                                    <td colspan="4">No Data Sources found</td>
+                                </tr>
+                                <tr th:each="ds : ${dataSources}">
+                                    <td class="align-middle text-center"><span th:text="${ds.name}">Name</span></td>
+                                    <td class="align-middle text-center"><span th:text="${ds.url}">Url</span></td>
+                                    <td class="align-middle text-center"><span th:text="${ds.username}">Username</span></td>
+                                    <td class="align-middle text-center">
+                                        <a class="btn btn-primary mt-1 mr-1 mb-1" th:href="@{/datasources/{id}(id=${ds.id})}">
+                                            <img src="/image/gear.svg" alt="Manage" width="20" height="20" title="Manage Data Source" />
+                                        </a>
+
+                                        <th:block th:switch="${ds.status.name()}">
+                                            <a th:case="'VALID'" class="btn btn-success mt-1 mr-1 mb-1" th:href="@{/datasources/{id}/test(id=${ds.id})}">
+                                                <img src="/image/checked.svg" alt="Connection Succeeded" width="20" height="20" title="Connection Succeeded" />
+                                            </a>
+                                            <a th:case="'INVALID'" class="btn btn-danger mt-1 mr-1 mb-1" th:href="@{/datasources/{id}/test(id=${ds.id})}">
+                                                <img src="/image/cross.svg" alt="Connection Failed" width="20" height="20" title="Connection Failed" />
+                                            </a>
+                                            <a th:case="*" class="btn btn-warning mt-1 mr-1 mb-1" th:href="@{/datasources/{id}/test(id=${ds.id})}">
+                                                <img src="/image/plug.svg" alt="Test Connection" width="20" height="20" title="Test Connection" />
+                                            </a>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h3>Tasks<a class="btn btn-link" href="#" th:href="@{/tasks}">:: New</a></h3>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-body pt-1 pb-1">
+                    <div class="row" style="background-color: #f6f6f6;">
+                        <div class="col-md-12 p-0">
+                            <table class="table">
+                                <thead>
+                                    <tr style="background-color: #dbdbdb;">
+                                        <th class="align-middle text-center">Name</th>
+                                        <th class="align-middle text-center">Source</th>
+                                        <th class="align-middle text-center">Owner</th>
+                                        <th class="align-middle text-center">Cron</th>
+                                        <th class="align-middle text-center">Spreadsheet</th>
+                                        <th class="align-middle text-center">Last</th>
+                                        <th class="align-middle text-center">Next</th>
+                                        <th class="align-middle text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${tasks.empty}">
+                                        <td colspan="8">No Tasks found</td>
+                                    </tr>
+                                    <tr th:each="task : ${tasks}">
+                                        <td class="align-middle text-center"><span th:text="${task.name}">Name</span></td>
+                                        <td class="align-middle text-center"><span th:text="${task.dataSourceName}">Source</span></td>
+                                        <td class="align-middle text-center"><span th:text="${task.owner}">Owner</span></td>
+                                        <td class="align-middle text-center"><span th:text="${task.cron}">0 0/2 * ? * * *</span></td>
+                                        <td class="align-middle text-center" style="max-width: 160px;">
+                                            <span style="word-wrap: anywhere;" th:text="${task.sheetId}">Sheet</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span th:utext="${#temporals.format(task.lastExecution,'dd/MM/yyyy<''br''>HH:mm:ss')}">Last Execution</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span th:if="${task.active}" th:utext="${#temporals.format(task.nextExecution,'dd/MM/yyyy<''br''>HH:mm:ss', 'a')}">Next Execution</span>
+                                            <span th:unless="${task.active}" th:text="Off">Off</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span>
+                                                <a th:unless="${task.status.name() == 'RUNNING'}" class="btn btn-primary mt-1 mr-1 mb-1" th:href="@{/tasks/{id}(id=${task.id})}">
+                                                    <img src="/image/gear.svg" alt="Manage" width="20" height="20" title="Manage Task" />
+                                                </a>
+
+                                                <th:block th:if="${task.active}" th:switch="${task.status.name()}">
+                                                    <a th:case="'VALID'" class="btn btn-success mt-1 mr-1 mb-1" th:href="@{/tasks/{id}/execute(id=${task.id})}">
+                                                        <img src="/image/run.svg" alt="Execute" width="20" height="20" title="Execute Task" />
+                                                    </a>
+                                                    <a th:case="'INVALID'" class="btn btn-danger mt-1 mr-1 mb-1" th:href="@{/tasks/{id}/execute(id=${task.id})}">
+                                                        <img src="/image/run.svg" alt="Execute" width="20" height="20" title="Execute Task" />
+                                                    </a>
+                                                    <a th:case="'RUNNING'"  class="btn btn-secondary mt-1 mr-1 mb-1" href="/">
+                                                        <img src="/image/ellipsis.svg" alt="Running" width="20" height="20" title="Task Running" />
+                                                    </a>
+                                                    <a th:case="*" class="btn btn-warning mt-1 mr-1 mb-1" th:href="@{/tasks/{id}/execute(id=${task.id})}">
+                                                        <img src="/image/run.svg" alt="Execute" width="20" height="20" title="Execute Task" />
+                                                    </a>
+                                                </th:block>
+
+                                                <a class="btn btn-info mt-1 mr-1 mb-1" th:href="@{/tasks/{id}/logs(id=${task.id})}">
+                                                    <img src="/image/log.svg" alt="Log" width="20" height="20" title="Open log" />
+                                                </a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

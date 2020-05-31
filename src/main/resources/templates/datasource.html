@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/head :: baseHead(~{::title})">
+        <title>Data Source</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div th:insert="fragments/header :: content"></div>
+
+            <div class="row">
+                <div class="col-md-12 mt-5">
+                    <h3>Data Source</h3>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-md-12 mb-3" th:if="${message}">
+                        <span style="color: #FF0000;" th:text="${message}">Any form message</span>
+                    </div>
+                    <div class="col-md-12">
+                        <form action="#" th:object="${dataSource}" method="post"
+                            th:action="${dataSource.id} == null
+                                ? @{/datasources/create}
+                                : @{/datasources/{id}/update(id=${dataSource.id})}">
+
+                            <div class="form-row">
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="dataSourceName">Name</label>
+                                    <input type="text" th:field="*{name}" class="form-control" id="dataSourceName" placeholder="Data Source Name">
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="dataSourceUrl">Url</label>
+                                    <input type="text" th:field="*{url}" class="form-control" id="dataSourceUrl" placeholder="Data Source Url">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="dataSourceUsername">Username</label>
+                                    <input type="text" th:field="*{username}" class="form-control" id="dataSourceUsername" placeholder="Data Source Username">
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="dataSourcePassword">Password</label>
+                                    <input type="text" th:field="*{password}" class="form-control" id="dataSourcePassword" placeholder="Data Source Password">
+                                </div>
+                            </div>
+
+                            <div class="form-row form-group">
+                                <div class="col-md-12">
+                                    <a class="btn btn-info float-left mr-5" href="#" th:href="@{/}">Back</a>
+
+                                    <a class="btn btn-danger float-left" href="#"
+                                       th:if="${dataSource.id}"
+                                       th:href="@{/datasources/{id}/delete(id=${dataSource.id})}">Delete</a>
+
+                                    <input type="submit" id="submitButton" class="btn btn-success float-right ml-2" th:value="Save">
+
+                                    <input type="reset" id="resetButton" class="btn btn-danger float-right ml-5" th:value="Reset"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

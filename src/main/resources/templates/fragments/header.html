@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+<div th:fragment="content">
+    <div class="pt-4">
+        <div th:unless="${authType.none()}" class="float-left">
+            <b>Logged as </b>
+            <span sec:authentication="name">Username</span>
+            <span><a class="btn btn-link" href="/logout">Logout</a></span>
+        </div>
+
+        <a th:href="@{/drivers}" class="btn btn-primary ml-2 mr-5 float-right">
+            <img src="/image/connector.svg" alt="Drivers" width="20" height="20" title="Drivers"/>
+        </a>
+        <a href="/h2-console" class="btn btn-primary float-right">
+            <img src="/image/db.svg" alt="DB Console" width="20" height="20" title="DB Console"/>
+        </a>
+    </div>
+
+    <div class="pt-5 mb-4 text-center">
+        <h2>Sql 2 Sheets</h2>
+    </div>
+</div>
+</body>
+</html>

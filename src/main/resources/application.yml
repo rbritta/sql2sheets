@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: @project.name@
+  servlet:
+    multipart:
+      max-file-size: 50MB
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:file:./db/h2-data;DB_CLOSE_ON_EXIT=FALSE
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: America/Sao_Paulo
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+        initialize-schema: always
+        commentPrefix: qrtz_
+    properties:
+      org.quartz.scheduler:
+        instanceId: AUTO
+      org.quartz.threadPool:
+        threadCount: 2
+      org.quartz.jobStore:
+        isClustered: true
+        clusterCheckinInterval: 5000
+  ldap:
+    urls: ldap://localhost:389
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+  health:
+    ldap:
+      enabled: false
+
+server:
+  context-path: /
+  port: 8080
+  error:
+    path: /error
+
+sql2sheets:
+  authentication:
+    type: NONE # Options: NONE, IN_MEMORY, LDAP
+    ldap:
+      domain: dc=example,dc=com
+      user:
+        dn-pattern: uid={0},ou=Users
+        password-attribute: password
+  drivers:
+    directory: lib

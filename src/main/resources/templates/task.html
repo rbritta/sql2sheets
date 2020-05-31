@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/head :: baseHead(~{::title})">
+        <title>Task</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div th:insert="fragments/header :: content"></div>
+
+            <div class="row">
+                <div class="col-md-12 mt-5">
+                    <h3 class="float-left">Task</h3>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-md-12 mb-3" th:if="${message}">
+                        <span style="color: #FF0000;" th:text="${message}">Any form message</span>
+                    </div>
+                    <div class="col-md-12">
+                        <form action="#" th:object="${task}" method="post"
+                            th:action="${task.id} == null
+                            ? @{/tasks/create}
+                            : @{/tasks/{id}/update(id=${task.id})}">
+
+                            <div class="text-right">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-outline-secondary">
+                                        <input type="radio" name="options" id="option2" th:field="*{active}" value="0"> Off
+                                    </label>
+                                    <label class="btn btn-outline-secondary">
+                                        <input type="radio" name="options" id="option1" th:field="*{active}" value="1"> On
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskName">Name</label>
+                                    <input type="text" th:field="*{name}" class="form-control" id="taskName" placeholder="Task name">
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskOwner">Owner</label>
+                                    <input type="text" th:field="*{owner}" class="form-control" id="taskOwner" placeholder="Task owner">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskCron">Cron</label>
+                                    <input type="text" th:field="*{cron}" class="form-control" id="taskCron" placeholder="Task cron, e.g: 0 0/2 * ? * * *">
+                                    <span>You can create your cron <a href="https://www.freeformatter.com/cron-expression-generator-quartz.html" target="_blank">here</a>!</span>
+                                </div>
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskQuery">Query</label>
+                                    <input type="text" th:field="*{query}" class="form-control" id="taskQuery" placeholder="E.g: select * from any_view">
+                                    <span>Views are recommended</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskDataSource">Data Source</label>
+                                    <select th:field="*{dataSourceName}" class="form-control" id="taskDataSource">
+                                        <option th:each="ds : ${datasources}" th:value="${ds.name}" th:text="${ds.name}"></option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskSheetId">Sheet ID</label>
+                                    <input type="text" th:field="*{sheetId}" class="form-control" id="taskSheetId" placeholder="Spreadsheet ID">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskSheetRangeData">Sheet Data Range</label>
+                                    <input type="text" th:field="*{sheetDataRange}" class="form-control" id="taskSheetRangeData" placeholder="E.g: currentTabName!B1:D300">
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 form-group">
+                                    <label for="taskSheetTimestampCell">Sheet Timestamp Cell</label>
+                                    <input type="text" th:field="*{sheetTimeCell}" class="form-control" id="taskSheetTimestampCell" placeholder="E.g: currentTabName!A1">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-12 col-sm-12 form-group">
+                                    <label for="taskSheetAuthorization">Sheet Authorization</label>
+                                    <textarea th:field="*{sheetAuthorization}" class="form-control" id="taskSheetAuthorization" placeholder="Authorization Key of the project"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="form-row form-group">
+                                <div class="col-md-12">
+                                    <a class="btn btn-info float-left mr-5" href="#" th:href="@{/}">Back</a>
+                                    <a th:if="${task.id}" class="btn btn-danger float-left" href="#" th:href="@{/tasks/{id}/delete(id=${task.id})}">Delete</a>
+                                    <input type="submit" id="submitButton" class="btn btn-success float-right ml-2" th:value="Save">
+                                    <input type="reset" id="resetButton" class="btn btn-danger float-right ml-2" th:value="Reset"/>
+                                    <a th:if="${task.id}" class="btn btn-info float-right" href="#" th:href="@{/tasks/{id}/clone(id=${task.id})}">Clone</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
