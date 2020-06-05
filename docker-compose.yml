@@ -2,12 +2,16 @@ version: '3.7'
 
 services:
   sql2sheets:
-    image: rbritta/sql2sheets:1.0.0
+    image: rbritta/sql2sheets
     container_name: sql2sheets
     ports:
       - 8080:8080
     environment:
       TZ: America/Sao_Paulo
+      SQL2SHEETS_AUTHENTICATION_TYPE: IN_MEMORY
+    volumes:
+      - /data/sql2sheets/db:/sql2sheets/db
+      - /data/sql2sheets/lib:/sql2sheets/lib
     logging:
       options:
         max-size: "10m"
