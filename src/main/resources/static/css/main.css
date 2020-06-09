@@ -1,0 +1,21 @@
+.sheet-id-cell {
+    max-width: 160px;
+}
+
+.sheet-id-cell a {
+    word-wrap: anywhere;
+    color: #212529;
+}
+
+.sheet-cron-cell span {
+    word-wrap: anywhere;
+}
+
+.card-body .row {
+    background-color: #f6f6f6;
+}
+
+.card-body thead tr {
+    background-color: #dbdbdb;
+}
+

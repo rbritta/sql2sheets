@@ -1,5 +1,6 @@
 package br.eti.rbritta.sql2sheets.service;
 
+import br.eti.rbritta.sql2sheets.config.SpreadsheetProperties;
 import br.eti.rbritta.sql2sheets.controller.api.task.TaskRequest;
 import br.eti.rbritta.sql2sheets.exception.TaskNotFoundException;
 import br.eti.rbritta.sql2sheets.model.Task;
@@ -14,9 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static br.eti.rbritta.sql2sheets.ApplicationConfig.TASK_ASYNC_EXECUTOR;
+import static java.util.Objects.nonNull;
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 @Service
 public class TaskService extends BaseEntityService<Task, TaskRepository> {
@@ -25,6 +31,9 @@ public class TaskService extends BaseEntityService<Task, TaskRepository> {
 
     @Autowired
     private DataSourceService dsService;
+
+    @Autowired
+    private SpreadsheetProperties spreadsheetProperties;
 
     @Autowired
     private TaskExecutorService executor;
@@ -47,7 +56,20 @@ public class TaskService extends BaseEntityService<Task, TaskRepository> {
     }
 
     public Task getOne(UUID id) {
-        return repo().findById(id).orElseThrow(TaskNotFoundException::new);
+        return complete(repo().findById(id).orElseThrow(TaskNotFoundException::new));
+    }
+
+    public <N> List<N> getAllAs(Function<Task, N> function) {
+        return super.getAllAs(task -> function.apply(this.complete(task)));
+    }
+
+    public Task complete(Task task) {
+        task.setNextExecution(scheduler.getNextExecutionTime(task));
+        TaskSheet sheet = task.getSheet();
+        if (nonNull(sheet)) {
+            sheet.setUrl(spreadsheetProperties.getUrl(sheet.getId()));
+        }
+        return task;
     }
 
     public Task update(UUID id, TaskRequest request) {
