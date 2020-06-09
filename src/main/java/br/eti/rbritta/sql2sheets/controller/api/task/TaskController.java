@@ -1,7 +1,6 @@
 package br.eti.rbritta.sql2sheets.controller.api.task;
 
 import br.eti.rbritta.sql2sheets.model.Task;
-import br.eti.rbritta.sql2sheets.scheduler.TaskScheduler;
 import br.eti.rbritta.sql2sheets.service.AuditService;
 import br.eti.rbritta.sql2sheets.service.TaskLogService;
 import br.eti.rbritta.sql2sheets.service.TaskService;
@@ -19,9 +18,6 @@ public class TaskController {
     private AuditService audit;
 
     @Autowired
-    private TaskScheduler scheduler;
-
-    @Autowired
     private TaskService service;
 
     @Autowired
@@ -29,10 +25,7 @@ public class TaskController {
 
     @GetMapping
     public List<TaskResponse> getAll() {
-        return service.getAllAs(task -> {
-            task.setNextExecution(scheduler.getNextExecutionTime(task));
-            return TaskResponse.of(task);
-        });
+        return service.getAllAs(TaskResponse::of);
     }
 
     @GetMapping("/{id}")

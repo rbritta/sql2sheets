@@ -28,6 +28,7 @@ public class TaskResponse {
     private String query;
     private String dataSourceName;
     private String sheetId;
+    private String sheetUrl;
     private String sheetDataRange;
     private String sheetTimeCell;
     private String sheetAuthorization;
@@ -49,6 +50,7 @@ public class TaskResponse {
                 entity.getQuery(),
                 isNull(dsConfig) ? null : dsConfig.getName(),
                 isNull(sheet) ? null : sheet.getId(),
+                isNull(sheet) ? null : sheet.getUrl(),
                 isNull(sheet) ? null : sheet.getRangeData(),
                 isNull(sheet) ? null : sheet.getRangeTimestamp(),
                 isNull(sheet) ? null : sheet.getAuthorization(),
@@ -67,6 +69,7 @@ public class TaskResponse {
                 request.getQuery(),
                 request.getDataSourceName(),
                 request.getSheetId(),
+                null,
                 request.getSheetDataRange(),
                 request.getSheetTimeCell(),
                 request.getSheetAuthorization(),

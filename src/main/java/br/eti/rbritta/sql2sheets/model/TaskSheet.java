@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 @Getter
 @Setter
@@ -15,6 +16,9 @@ public class TaskSheet {
     @NotNull
     @Column(name = "SHEET_ID")
     private String id;
+
+    @Transient
+    private String url;
 
     @NotNull
     @Column(name = "SHEET_AUTHORIZATION", length = 4000)

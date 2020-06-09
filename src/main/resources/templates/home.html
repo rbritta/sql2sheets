@@ -18,16 +18,16 @@
             </div>
             <div class="card">
                 <div class="card-body pt-1 pb-1">
-                    <div class="row " style="background-color: #f6f6f6;">
+                    <div class="row">
                         <div class="col-md-12 p-0">
                             <table class="table">
                                 <thead>
-                                <tr style="background-color: #dbdbdb;">
-                                    <th class="align-middle text-center">Name</th>
-                                    <th class="align-middle text-center">Url</th>
-                                    <th class="align-middle text-center">Username</th>
-                                    <th class="align-middle text-center"></th>
-                                </tr>
+                                    <tr>
+                                        <th class="align-middle text-center">Name</th>
+                                        <th class="align-middle text-center">Url</th>
+                                        <th class="align-middle text-center">Username</th>
+                                        <th class="align-middle text-center"></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:if="${dataSources.empty}">
@@ -71,11 +71,11 @@
 
             <div class="card">
                 <div class="card-body pt-1 pb-1">
-                    <div class="row" style="background-color: #f6f6f6;">
+                    <div class="row">
                         <div class="col-md-12 p-0">
                             <table class="table">
                                 <thead>
-                                    <tr style="background-color: #dbdbdb;">
+                                    <tr>
                                         <th class="align-middle text-center">Name</th>
                                         <th class="align-middle text-center">Source</th>
                                         <th class="align-middle text-center">Owner</th>
@@ -94,9 +94,11 @@
                                         <td class="align-middle text-center"><span th:text="${task.name}">Name</span></td>
                                         <td class="align-middle text-center"><span th:text="${task.dataSourceName}">Source</span></td>
                                         <td class="align-middle text-center"><span th:text="${task.owner}">Owner</span></td>
-                                        <td class="align-middle text-center"><span th:text="${task.cron}">0 0/2 * ? * * *</span></td>
-                                        <td class="align-middle text-center" style="max-width: 160px;">
-                                            <span style="word-wrap: anywhere;" th:text="${task.sheetId}">Sheet</span>
+                                        <td class="align-middle text-center sheet-cron-cell">
+                                            <span th:text="${task.cron}">0 0/2 * ? * * *</span>
+                                        </td>
+                                        <td class="align-middle text-center sheet-id-cell">
+                                            <a th:href="${task.sheetUrl}" th:text="${task.sheetId}">Sheet ID</a>
                                         </td>
                                         <td class="align-middle text-center">
                                             <span th:utext="${#temporals.format(task.lastExecution,'dd/MM/yyyy<''br''>HH:mm:ss')}">Last Execution</span>

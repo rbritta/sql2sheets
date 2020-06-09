@@ -60,6 +60,8 @@ server:
     path: /error
 
 sql2sheets:
+  spreadsheet:
+    url-pattern: https://docs.google.com/spreadsheets/d/{0}/
   authentication:
     type: NONE # Options: NONE, IN_MEMORY, LDAP
     ldap:

@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="col-md-12 mb-3" th:if="${message}">
-                        <span style="color: #FF0000;" th:text="${message}">Any form message</span>
+                        <span class="text-danger" th:text="${message}">Any form message</span>
                     </div>
                     <div class="col-md-12">
                         <form action="#" th:object="${task}" method="post"

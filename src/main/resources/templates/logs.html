@@ -20,7 +20,7 @@
     </div>
     <hr />
     <div class="row">
-        <div style="font-size: 0.7rem;" class="col-md-12" id="log-data">
+        <div class="col-md-12 small" id="log-data">
             <div th:each="line : ${logs.lines}">
                 <span th:text="${line}">Log line</span>
             </div>
