@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ViewHomeController {
+public class ViewDefaultController {
 
     @Autowired
     private TaskController taskApi;
@@ -22,5 +22,10 @@ public class ViewHomeController {
     @GetMapping("/")
     public String openHome(Model model) {
         return nav.renderHome(model, taskApi.getAll(), dataSourcesApi.getAll());
+    }
+
+    @GetMapping("/login")
+    public String openLogin(Model model) {
+        return nav.renderLogin(model);
     }
 }

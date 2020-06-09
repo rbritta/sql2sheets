@@ -17,7 +17,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**");
     }
 
     @Override
@@ -35,8 +35,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
-                .anyRequest().fullyAuthenticated()
-                .and().formLogin();
+                .anyRequest().authenticated()
+                .and().formLogin().loginPage("/login").permitAll()
+                .and().logout().permitAll();
     }
 
     @Autowired
