@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: baseHead(title=~{::title}, links=~{::link})">
+    <title th:text="${appName} + ' :: Login'">Login</title>
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+</head>
+
+<body>
+<div class="container" th:fragment="content">
+    <form class="form-signin" name="f" th:action="@{/login}" method="post">
+        <h2 class="form-signin-heading text-center pb-3 mt-5">Sql 2 Sheets</h2>
+
+        <div class="alert alert-error" th:if="${param.error}">Invalid username and password</div>
+        <div class="alert alert-success" th:if="${param.logout}">You have been logged out</div>
+
+        <p>
+            <label class="sr-only" for="username">Username</label>
+            <input class="form-control" type="text"
+                   id="username" name="username"
+                   placeholder="Username" required
+                   autofocus/>
+        </p>
+
+        <p>
+            <label class="sr-only" for="password">Password</label>
+            <input class="form-control" type="password"
+                   id="password" name="password"
+                   placeholder="Password" required/>
+        </p>
+
+        <div class="form-actions">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+

@@ -37,6 +37,11 @@ public class NavigationHandler {
         return "redirect:/";
     }
 
+    public String renderLogin(Model model) {
+        addAppAttributes(model);
+        return audit("login");
+    }
+
     public String renderHome(Model model, List<TaskResponse> tasks, List<DataSourceResponse> dataSources) {
         addAppAttributes(model);
         model.addAttribute("tasks", tasks);
